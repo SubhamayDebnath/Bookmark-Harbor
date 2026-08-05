@@ -3,6 +3,7 @@ import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { logger } from 'hono/logger';
 import { config } from 'dotenv';
+import connectDatabase from '@/config/db.js';
 
 config({ path: '.env' });
 
@@ -36,6 +37,7 @@ const port = Number(process.env.PORT) || 3000;
 
 const startServer = async () => {
   try {
+    await connectDatabase();
     serve({ fetch: app.fetch, port }, (info) => {
       console.log(`Server is running on http://localhost:${info.port}`);
     });
