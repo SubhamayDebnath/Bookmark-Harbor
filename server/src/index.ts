@@ -4,6 +4,7 @@ import { cors } from 'hono/cors';
 import { logger } from 'hono/logger';
 import { config } from 'dotenv';
 import connectDatabase from '@/config/db.js';
+import router from '@/routes/index.js';
 
 config({ path: '.env' });
 
@@ -19,6 +20,8 @@ app.use(
     allowMethods: ['GET', 'POST', 'DELETE', 'PATCH'],
   })
 );
+
+app.route('/api', router);
 
 app.get('/health', (c) => {
   return c.json({ success: true, message: 'Server is running' }, 200);
