@@ -1,4 +1,9 @@
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router';
+import AppPagination from '@/components/common/AppPagination';
+import LoadingCard from '@/components/common/LoadingScreen';
 import BookmarkCard from '@/components/dashboard/BookmarkCard';
+import AddBookmark from '@/components/dashboard/AddBookmark';
 import { Input } from '@/components/ui/input';
 import {
   Select,
@@ -8,38 +13,84 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from '@/components/ui/pagination';
-import BookmarkForm from '@/components/dashboard/AddBookmark';
+import { useBookmark } from '@/hooks/useBookmark';
+import { useRefreshStore } from '@/store/refresh.store';
+import type { Bookmark, Pagination } from '@/types/bookmark.types';
+
+const LIMIT = 10;
+const SEARCH_DEBOUNCE_MS = 400;
+
+const sortItems = [
+  { label: 'All', value: 'all' },
+  { label: 'Recent', value: 'recent' },
+  { label: 'Later', value: 'later' },
+];
 
 function DashboardPage() {
-  const sortItems = [
-    { label: 'All', value: 'all' },
-    { label: 'Recent', value: 'recent' },
-    { label: 'Later', value: 'later' },
-  ];
+  const { getBookmarks } = useBookmark();
+  const { refreshCount } = useRefreshStore();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
+  const [pagination, setPagination] = useState<Pagination | null>(null);
+  const [initialLoading, setInitialLoading] = useState(true);
+  const [searchInput, setSearchInput] = useState(searchParams.get('q') || '');
 
-  const categoryItems = [
-    { label: 'All', value: 'all' },
-    { label: 'Design', value: 'design' },
-    { label: 'Tech', value: 'tech' },
-    { label: 'Personal', value: 'personal' },
-  ];
+  const page = Math.max(1, Number(searchParams.get('page')) || 1);
+  const q = searchParams.get('q') || '';
+  const filter = searchParams.get('filter') || 'all';
+
+  const updateParam = (key: string, value: string) => {
+    const params = new URLSearchParams(searchParams);
+    if (value) {
+      params.set(key, value);
+    } else {
+      params.delete(key);
+    }
+    params.set('page', '1');
+    setSearchParams(params);
+  };
+
+  useEffect(() => {
+    const loadBookmarks = async () => {
+      const { bookmarks, pagination } = await getBookmarks({
+        page,
+        limit: LIMIT,
+        q,
+        filter: filter as 'all' | 'recent' | 'later',
+      });
+      setBookmarks(bookmarks);
+      setPagination(pagination);
+      setInitialLoading(false);
+    };
+    loadBookmarks();
+  }, [page, q, filter, refreshCount, getBookmarks]);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      if (searchInput !== q) {
+        updateParam('q', searchInput);
+      }
+    }, SEARCH_DEBOUNCE_MS);
+
+    return () => clearTimeout(timeout);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchInput]);
+
   return (
     <section className="flex w-full flex-col gap-5 py-5">
-      <div className="grid sm:grid-cols-2 grid-cols-1 gap-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <div className="w-full">
-          <Input placeholder="Search...." />
+          <Input
+            placeholder="Search...."
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+          />
         </div>
-        <div className="grid w-full grid-cols-2 sm:grid-cols-3 gap-3">
-          <Select>
+        <div className="grid w-full grid-cols-2 gap-3">
+          <Select
+            value={filter}
+            onValueChange={(value) => updateParam('filter', value)}
+          >
             <SelectTrigger className="w-full">
               <SelectValue placeholder="All" />
             </SelectTrigger>
@@ -53,57 +104,35 @@ function DashboardPage() {
               </SelectGroup>
             </SelectContent>
           </Select>
-          <Select>
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="All" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                {categoryItems.map((item) => (
-                  <SelectItem key={item.value} value={item.value}>
-                    {item.label}
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-          <BookmarkForm/>
+          <AddBookmark />
         </div>
       </div>
+
       <h1 className="text-primary text-lg font-medium tracking-tight">
         Bookmarks
       </h1>
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3">
-        {Array.from({ length: 10 }).map(() => (
-          <BookmarkCard />
-        ))}
-      </div>
-      <div>
-        <Pagination>
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious href="#" />
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#">1</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#" isActive>
-                2
-              </PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#">3</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationEllipsis />
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationNext href="#" />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
-      </div>
+
+      {initialLoading ? (
+        <LoadingCard />
+      ) : bookmarks.length === 0 ? (
+        <div className="flex w-full flex-col items-center justify-center gap-3 px-5 py-20">
+          <p className="text-center">Bookmark not found.</p>
+        </div>
+      ) : (
+        <>
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3">
+            {bookmarks.map((bookmark) => (
+              <BookmarkCard key={bookmark._id} bookmark={bookmark} />
+            ))}
+          </div>
+
+          {pagination && pagination.totalPages > 1 && (
+            <div>
+              <AppPagination pagination={pagination} />
+            </div>
+          )}
+        </>
+      )}
     </section>
   );
 }

@@ -1,24 +1,35 @@
-import { Badge } from '@/components/ui/badge';
-import { Button } from '../ui/button';
 import { Link } from 'react-router';
 import { Globe } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import UpdateBookmark from '@/components/dashboard/UpdateBookmark';
 import DeleteBookmark from '@/components/dashboard/DeleteBookmark';
+import type { Bookmark } from '@/types/bookmark.types';
 
-function BookmarkCard() {
+interface BookmarkCardProps {
+  bookmark: Bookmark;
+}
+
+function BookmarkCard({ bookmark }: BookmarkCardProps) {
+  const hostname = (() => {
+    try {
+      return new URL(bookmark.url).hostname;
+    } catch {
+      return bookmark.url;
+    }
+  })();
+
   return (
     <div className="bg-card border p-3">
-      <h2 className="text-primary font-medium">Refactoring UI</h2>
-      <span className="font-mono text-sm">refactoringui.com</span>
+      <h2 className="text-primary font-medium">{bookmark.title}</h2>
+      <span className="font-mono text-sm">{hostname}</span>
       <div className="mt-2 flex flex-wrap items-center gap-2">
-        <Badge className="text-xs h-6">Design</Badge>
-        <Button variant={'outline'} size={"icon-xs"} asChild>
-          <Link to={"/"}>
-          <Globe/>
+        <Button variant={'outline'} size={'icon-xs'} asChild>
+          <Link to={bookmark.url} target="_blank" rel="noopener noreferrer">
+            <Globe />
           </Link>
         </Button>
-        <UpdateBookmark/>
-        <DeleteBookmark/>
+        <UpdateBookmark bookmark={bookmark} />
+        <DeleteBookmark bookmarkId={bookmark._id} title={bookmark.title} />
       </div>
     </div>
   );

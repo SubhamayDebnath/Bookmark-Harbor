@@ -1,4 +1,12 @@
+import { useState } from 'react';
+import { LoaderCircle } from 'lucide-react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { useBookmark } from '@/hooks/useBookmark';
+import { useRefreshStore } from '@/store/refresh.store';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import {
   Dialog,
   DialogContent,
@@ -8,62 +16,84 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-const sortItems = [
-  { label: 'All', value: 'all' },
-  { label: 'Recent', value: 'recent' },
-  { label: 'Later', value: 'later' },
-];
+  createBookmarkSchema,
+  type CreateBookmarkInput,
+} from '@/validators/bookmark.validator';
 
 function AddBookmark() {
+  const { createBookmark, loading } = useBookmark();
+  const { appRefresh } = useRefreshStore();
+  const [open, setOpen] = useState(false);
+  const { register, handleSubmit, reset } = useForm<CreateBookmarkInput>({
+    defaultValues: {
+      title: '',
+      url: '',
+    },
+  });
+
+  const onSubmit = async (values: CreateBookmarkInput) => {
+    const result = createBookmarkSchema.safeParse(values);
+    if (!result.success) {
+      toast.error(result.error.issues[0].message);
+      return;
+    }
+    await createBookmark(values);
+    appRefresh();
+    reset({
+      title: '',
+      url: '',
+    });
+    setOpen(false);
+  };
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button>Add Bookmark</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Add Bookmark</DialogTitle>
+          <DialogTitle>Create Bookmark</DialogTitle>
           <DialogDescription>
             Save a bookmark to access it anytime.
           </DialogDescription>
         </DialogHeader>
-        <form className="flex flex-col gap-3">
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3">
           <div className="flex flex-col gap-2">
-            <Label>Name</Label>
-            <Input placeholder="Localhost" />
+            <Label htmlFor="title">Title</Label>
+            <Input
+              id="title"
+              placeholder="OpenAI"
+              autoComplete="off"
+              {...register('title')}
+            />
           </div>
           <div className="flex flex-col gap-2">
-            <Label>Website URL</Label>
-            <Input placeholder="http://localhost:5173/" />
+            <Label htmlFor="url">URL</Label>
+            <Input
+              id="url"
+              type="url"
+              placeholder="https://openai.com"
+              autoComplete="off"
+              {...register('url')}
+            />
           </div>
-          <div className="flex flex-col gap-2">
-            <Label>Select Color</Label>
-            <Select>
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="All" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  {sortItems.map((item) => (
-                    <SelectItem key={item.value} value={item.value}>
-                      {item.label}
-                    </SelectItem>
-                  ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
-          <div>
-            <Button className="w-full">Create Bookmark</Button>
+          <div className="mt-2">
+            <Button
+              type="submit"
+              size="lg"
+              className="w-full"
+              disabled={loading}
+            >
+              {loading ? (
+                <>
+                  <LoaderCircle className="mr-2 size-4 animate-spin" />
+                  Creating...
+                </>
+              ) : (
+                'Create Bookmark'
+              )}
+            </Button>
           </div>
         </form>
       </DialogContent>

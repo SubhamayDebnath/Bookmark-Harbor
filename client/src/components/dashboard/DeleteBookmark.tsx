@@ -1,4 +1,7 @@
-import { Trash } from 'lucide-react';
+import { useState } from 'react';
+import { LoaderCircle, Trash } from 'lucide-react';
+import { useBookmark } from '@/hooks/useBookmark';
+import { useRefreshStore } from '@/store/refresh.store';
 import {
   Dialog,
   DialogClose,
@@ -10,9 +13,24 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 
-function DeleteBookmark() {
+interface DeleteBookmarkProps {
+  bookmarkId: string;
+  title: string;
+}
+
+function DeleteBookmark({ bookmarkId, title }: DeleteBookmarkProps) {
+  const { deleteBookmark, loading } = useBookmark();
+  const { appRefresh } = useRefreshStore();
+  const [open, setOpen] = useState(false);
+
+  const handleDelete = async () => {
+    await deleteBookmark(bookmarkId);
+    appRefresh();
+    setOpen(false);
+  };
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button
           variant="destructive"
@@ -27,7 +45,7 @@ function DeleteBookmark() {
         <DialogHeader>
           <DialogTitle>Delete Bookmark</DialogTitle>
           <DialogDescription>
-            Are you sure you want to delete?
+            Are you sure you want to delete <strong>{title}</strong>?
           </DialogDescription>
         </DialogHeader>
 
@@ -35,7 +53,20 @@ function DeleteBookmark() {
           <DialogClose asChild>
             <Button variant="outline">Cancel</Button>
           </DialogClose>
-          <Button variant="destructive">Delete</Button>
+          <Button
+            variant="destructive"
+            disabled={loading}
+            onClick={handleDelete}
+          >
+            {loading ? (
+              <>
+                <LoaderCircle className="mr-2 size-4 animate-spin" />
+                Deleting...
+              </>
+            ) : (
+              'Delete'
+            )}
+          </Button>
         </div>
       </DialogContent>
     </Dialog>
