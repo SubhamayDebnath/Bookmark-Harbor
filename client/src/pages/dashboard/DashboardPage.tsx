@@ -17,6 +17,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination';
+import BookmarkForm from '@/components/dashboard/AddBookmark';
 
 function DashboardPage() {
   const sortItems = [
@@ -33,11 +34,11 @@ function DashboardPage() {
   ];
   return (
     <section className="flex w-full flex-col gap-5 py-5">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="w-full max-w-xs">
+      <div className="grid sm:grid-cols-2 grid-cols-1 gap-3">
+        <div className="w-full">
           <Input placeholder="Search...." />
         </div>
-        <div className="grid w-full max-w-60 grid-cols-2 gap-3">
+        <div className="grid w-full grid-cols-2 sm:grid-cols-3 gap-3">
           <Select>
             <SelectTrigger className="w-full">
               <SelectValue placeholder="All" />
@@ -66,6 +67,7 @@ function DashboardPage() {
               </SelectGroup>
             </SelectContent>
           </Select>
+          <BookmarkForm/>
         </div>
       </div>
       <h1 className="text-primary text-lg font-medium tracking-tight">
