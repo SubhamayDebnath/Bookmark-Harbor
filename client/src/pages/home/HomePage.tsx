@@ -1,7 +1,16 @@
-import { Link } from 'react-router';
+import { Link, Navigate } from 'react-router';
 import { Button } from '@/components/ui/button';
+import LoadingScreen from '@/components/common/LoadingScreen';
+import { useAuthStore } from '@/store/auth.store';
 
 function HomePage() {
+  const { user, loading } = useAuthStore();
+  if (loading) {
+    return <LoadingScreen />;
+  }
+  if (user) {
+    return <Navigate to="/dashboard" replace />;
+  }
   return (
     <section className="flex flex-1 flex-col items-center justify-center gap-5 py-10">
       <span className="font-mono text-sm font-medium uppercase">
