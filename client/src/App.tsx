@@ -1,5 +1,13 @@
+import AppRoutes from '@/routes/AppRoutes';
+import Gradient from './components/common/Gradient';
+
 function App() {
-  return <div>App</div>;
+  return (
+    <>
+    <Gradient/>
+    <AppRoutes />
+    </>
+  );
 }
 
 export default App;
