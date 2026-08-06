@@ -8,7 +8,7 @@ function Navbar() {
         <Link to={'/'} className="text-primary font-semibold tracking-tight">
           Bookmark Harbor
         </Link>
-        <ThemeButton/>
+        <ThemeButton />
       </nav>
     </header>
   );

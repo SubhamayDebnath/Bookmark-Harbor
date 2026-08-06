@@ -4,8 +4,8 @@ import Gradient from './components/common/Gradient';
 function App() {
   return (
     <>
-    <Gradient/>
-    <AppRoutes />
+      <Gradient />
+      <AppRoutes />
     </>
   );
 }

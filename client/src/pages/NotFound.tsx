@@ -1,11 +1,15 @@
-import { Button } from "@/components/ui/button";
-import { Link } from "react-router";
+import { Button } from '@/components/ui/button';
+import { Link } from 'react-router';
 
 function NotFound() {
   return (
-    <section className="max-w-4xl w-full min-h-dvh h-full flex flex-col items-center justify-center gap-3 p-5">
-        <h1 className="text-4xl font-bold text-primary tracking-tight">Error 404</h1>
-      <p className="text-center">The page you're looking for doesn't exist, or may have been moved.</p>
+    <section className="flex h-full min-h-dvh w-full max-w-4xl flex-col items-center justify-center gap-3 p-5">
+      <h1 className="text-primary text-4xl font-bold tracking-tight">
+        Error 404
+      </h1>
+      <p className="text-center">
+        The page you're looking for doesn't exist, or may have been moved.
+      </p>
       <Button variant={'outline'} size={'lg'} asChild>
         <Link to={'/'}>Back to home</Link>
       </Button>
@@ -13,4 +17,4 @@ function NotFound() {
   );
 }
 
-export default NotFound
+export default NotFound;

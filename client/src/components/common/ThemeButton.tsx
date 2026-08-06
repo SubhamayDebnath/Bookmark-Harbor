@@ -14,7 +14,6 @@ function ThemeButton() {
       size="icon-sm"
       onClick={toggleTheme}
       disabled={!hydrated}
-      className="cursor-pointer"
       aria-label={
         theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'
       }
