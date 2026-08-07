@@ -1,19 +1,26 @@
-import { Button } from '@/components/ui/button';
 import { Link } from 'react-router';
+import { Helmet } from 'react-helmet-async';
+import { Button } from '@/components/ui/button';
 
 function NotFound() {
   return (
-    <section className="flex h-full min-h-dvh w-full max-w-4xl flex-col items-center justify-center gap-3 p-5">
-      <h1 className="text-primary text-4xl font-bold tracking-tight">
-        Error 404
-      </h1>
-      <p className="text-center">
-        The page you're looking for doesn't exist, or may have been moved.
-      </p>
-      <Button variant={'outline'} size={'lg'} asChild>
-        <Link to={'/'}>Back to home</Link>
-      </Button>
-    </section>
+    <>
+      <Helmet>
+        <title>Page Not Found — Bookmark Harbor</title>
+        <meta name="robots" content="noindex, nofollow" />
+      </Helmet>
+      <section className="flex h-full min-h-dvh w-full max-w-4xl flex-col items-center justify-center gap-3 p-5">
+        <h1 className="text-primary text-4xl font-bold tracking-tight">
+          Error 404
+        </h1>
+        <p className="text-center">
+          The page you're looking for doesn't exist, or may have been moved.
+        </p>
+        <Button variant={'outline'} size={'lg'} asChild>
+          <Link to={'/'}>Back to home</Link>
+        </Button>
+      </section>
+    </>
   );
 }
 

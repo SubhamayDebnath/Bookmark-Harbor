@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router';
+import { Helmet } from 'react-helmet-async';
 import AppPagination from '@/components/common/AppPagination';
 import LoadingScreen from '@/components/common/LoadingScreen';
 import BookmarkCard from '@/components/dashboard/BookmarkCard';
@@ -77,63 +78,69 @@ function DashboardPage() {
   }, [searchInput]);
 
   return (
-    <section className="flex w-full flex-col gap-5 py-5">
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-        <div className="w-full">
-          <Input
-            placeholder="Search...."
-            value={searchInput}
-            onChange={(e) => setSearchInput(e.target.value)}
-          />
-        </div>
-        <div className="grid w-full grid-cols-2 gap-3">
-          <Select
-            value={filter}
-            onValueChange={(value) => updateParam('filter', value)}
-          >
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="All" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                {sortItems.map((item) => (
-                  <SelectItem key={item.value} value={item.value}>
-                    {item.label}
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-          <AddBookmark />
-        </div>
-      </div>
-
-      <h1 className="text-primary text-lg font-medium tracking-tight">
-        Bookmarks
-      </h1>
-
-      {initialLoading ? (
-        <LoadingScreen />
-      ) : bookmarks.length === 0 ? (
-        <div className="flex w-full flex-col items-center justify-center gap-3 px-5 py-20">
-          <p className="text-center">Bookmark not found.</p>
-        </div>
-      ) : (
-        <>
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3">
-            {bookmarks.map((bookmark) => (
-              <BookmarkCard key={bookmark._id} bookmark={bookmark} />
-            ))}
+    <>
+      <Helmet>
+        <title>My Bookmarks — Bookmark Harbor</title>
+        <meta name="robots" content="noindex, nofollow" />
+      </Helmet>
+      <section className="flex w-full flex-col gap-5 py-5">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <div className="w-full">
+            <Input
+              placeholder="Search...."
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+            />
           </div>
+          <div className="grid w-full grid-cols-2 gap-3">
+            <Select
+              value={filter}
+              onValueChange={(value) => updateParam('filter', value)}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="All" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  {sortItems.map((item) => (
+                    <SelectItem key={item.value} value={item.value}>
+                      {item.label}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+            <AddBookmark />
+          </div>
+        </div>
 
-          {pagination && pagination.totalPages > 1 && (
-            <div>
-              <AppPagination pagination={pagination} />
+        <h1 className="text-primary text-lg font-medium tracking-tight">
+          Bookmarks
+        </h1>
+
+        {initialLoading ? (
+          <LoadingScreen />
+        ) : bookmarks.length === 0 ? (
+          <div className="flex w-full flex-col items-center justify-center gap-3 px-5 py-20">
+            <p className="text-center">Bookmark not found.</p>
+          </div>
+        ) : (
+          <>
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3">
+              {bookmarks.map((bookmark) => (
+                <BookmarkCard key={bookmark._id} bookmark={bookmark} />
+              ))}
             </div>
-          )}
-        </>
-      )}
-    </section>
+
+            {pagination && pagination.totalPages > 1 && (
+              <div>
+                <AppPagination pagination={pagination} />
+              </div>
+            )}
+          </>
+        )}
+      </section>
+    </>
   );
 }
 

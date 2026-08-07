@@ -21,6 +21,7 @@ import {
   Server,
   RefreshCw,
 } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 import { Button } from '@/components/ui/button';
 import AdminNav from '@/components/admin/AdminNav';
 import LoadingScreen from '@/components/common/LoadingScreen';
@@ -120,122 +121,127 @@ function AdminStatsPage() {
   }
 
   return (
-    <div className="flex flex-col gap-5 py-5">
-      <AdminNav />
+    <>
+      <Helmet>
+        <title>Server Stats — Admin — Bookmark Harbor</title>
+      </Helmet>
+      <section className="flex flex-col gap-5 py-5">
+        <AdminNav />
 
-      <div className="flex items-center gap-3">
-        <h1 className="text-primary text-lg font-semibold tracking-tight">
-          Server Stats
-        </h1>
-        <Button
-          variant="outline"
-          size="sm"
-          disabled={loading}
-          onClick={handleRefetch}
-        >
-          <RefreshCw className={`size-4 ${loading ? 'animate-spin' : ''}`} />
-          <span>Refresh</span>
-        </Button>
-      </div>
+        <div className="flex items-center gap-3">
+          <h1 className="text-primary text-lg font-semibold tracking-tight">
+            Server Stats
+          </h1>
+          <Button
+            variant="outline"
+            size="sm"
+            disabled={loading}
+            onClick={handleRefetch}
+          >
+            <RefreshCw className={`size-4 ${loading ? 'animate-spin' : ''}`} />
+            <span>Refresh</span>
+          </Button>
+        </div>
 
-      <StatGroup
-        title="Users"
-        items={[
-          { label: 'Total Users', value: stats.users.total, icon: Users },
-          { label: 'Active', value: stats.users.active, icon: UserCheck },
-          { label: 'Inactive', value: stats.users.inactive, icon: UserX },
-          { label: 'Admins', value: stats.users.admins, icon: ShieldCheck },
-        ]}
-      />
-
-      <StatGroup
-        title="Bookmarks"
-        items={[
-          {
-            label: 'Total Bookmarks',
-            value: stats.bookmarks.total,
-            icon: Bookmark,
-          },
-        ]}
-      />
-
-      {stats.mongo && (
         <StatGroup
-          title="Database"
+          title="Users"
+          items={[
+            { label: 'Total Users', value: stats.users.total, icon: Users },
+            { label: 'Active', value: stats.users.active, icon: UserCheck },
+            { label: 'Inactive', value: stats.users.inactive, icon: UserX },
+            { label: 'Admins', value: stats.users.admins, icon: ShieldCheck },
+          ]}
+        />
+
+        <StatGroup
+          title="Bookmarks"
           items={[
             {
-              label: 'Collections',
-              value: stats.mongo.collections,
-              icon: Database,
-            },
-            { label: 'Documents', value: stats.mongo.objects, icon: Files },
-            {
-              label: 'Data Size',
-              value: formatBytes(stats.mongo.dataSize),
-              icon: HardDrive,
-            },
-            {
-              label: 'Storage Size',
-              value: formatBytes(stats.mongo.storageSize),
-              icon: Archive,
-            },
-            { label: 'Indexes', value: stats.mongo.indexes, icon: ListTree },
-            {
-              label: 'Index Size',
-              value: formatBytes(stats.mongo.indexSize),
-              icon: Layers,
-            },
-            {
-              label: 'Avg Object Size',
-              value: formatBytes(stats.mongo.avgObjSize),
-              icon: Ruler,
+              label: 'Total Bookmarks',
+              value: stats.bookmarks.total,
+              icon: Bookmark,
             },
           ]}
         />
-      )}
 
-      <StatGroup
-        title="Server"
-        items={[
-          {
-            label: 'Uptime',
-            value: formatUptime(stats.server.uptimeSeconds),
-            icon: Clock,
-          },
-          {
-            label: 'Node Version',
-            value: stats.server.nodeVersion,
-            icon: Server,
-          },
-          {
-            label: 'Platform',
-            value: `${stats.server.platform} (${stats.server.arch})`,
-            icon: MonitorCog,
-          },
-          { label: 'CPU Cores', value: stats.server.cpuCount, icon: Cpu },
-          {
-            label: 'Heap Used',
-            value: formatBytes(stats.server.memory.heapUsed),
-            icon: MemoryStick,
-          },
-          {
-            label: 'RSS Memory',
-            value: formatBytes(stats.server.memory.rss),
-            icon: Gauge,
-          },
-          {
-            label: 'Total System Memory',
-            value: formatBytes(stats.server.totalSystemMemory),
-            icon: MemoryStick,
-          },
-          {
-            label: 'Free System Memory',
-            value: formatBytes(stats.server.freeSystemMemory),
-            icon: MemoryStick,
-          },
-        ]}
-      />
-    </div>
+        {stats.mongo && (
+          <StatGroup
+            title="Database"
+            items={[
+              {
+                label: 'Collections',
+                value: stats.mongo.collections,
+                icon: Database,
+              },
+              { label: 'Documents', value: stats.mongo.objects, icon: Files },
+              {
+                label: 'Data Size',
+                value: formatBytes(stats.mongo.dataSize),
+                icon: HardDrive,
+              },
+              {
+                label: 'Storage Size',
+                value: formatBytes(stats.mongo.storageSize),
+                icon: Archive,
+              },
+              { label: 'Indexes', value: stats.mongo.indexes, icon: ListTree },
+              {
+                label: 'Index Size',
+                value: formatBytes(stats.mongo.indexSize),
+                icon: Layers,
+              },
+              {
+                label: 'Avg Object Size',
+                value: formatBytes(stats.mongo.avgObjSize),
+                icon: Ruler,
+              },
+            ]}
+          />
+        )}
+
+        <StatGroup
+          title="Server"
+          items={[
+            {
+              label: 'Uptime',
+              value: formatUptime(stats.server.uptimeSeconds),
+              icon: Clock,
+            },
+            {
+              label: 'Node Version',
+              value: stats.server.nodeVersion,
+              icon: Server,
+            },
+            {
+              label: 'Platform',
+              value: `${stats.server.platform} (${stats.server.arch})`,
+              icon: MonitorCog,
+            },
+            { label: 'CPU Cores', value: stats.server.cpuCount, icon: Cpu },
+            {
+              label: 'Heap Used',
+              value: formatBytes(stats.server.memory.heapUsed),
+              icon: MemoryStick,
+            },
+            {
+              label: 'RSS Memory',
+              value: formatBytes(stats.server.memory.rss),
+              icon: Gauge,
+            },
+            {
+              label: 'Total System Memory',
+              value: formatBytes(stats.server.totalSystemMemory),
+              icon: MemoryStick,
+            },
+            {
+              label: 'Free System Memory',
+              value: formatBytes(stats.server.freeSystemMemory),
+              icon: MemoryStick,
+            },
+          ]}
+        />
+      </section>
+    </>
   );
 }
 

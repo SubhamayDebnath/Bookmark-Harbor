@@ -1,5 +1,6 @@
 import { LoaderCircle } from 'lucide-react';
 import { useForm } from 'react-hook-form';
+import { Helmet } from 'react-helmet-async';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router';
 import AuthForm from '@/components/AuthForm';
@@ -33,52 +34,62 @@ function RegisterPage() {
     navigate('/dashboard', { replace: true });
   };
   return (
-    <AuthForm>
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3">
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="name">Name</Label>
-          <Input
-            id="name"
-            type="text"
-            placeholder="John Doe"
-            autoComplete="name"
-            {...register('name')}
-          />
-        </div>
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="email">Email</Label>
-          <Input
-            id="email"
-            type="email"
-            placeholder="your@example.com"
-            autoComplete="email"
-            {...register('email')}
-          />
-        </div>
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="password">Password</Label>
-          <Input
-            id="password"
-            type="password"
-            placeholder="******"
-            autoComplete="new-password"
-            {...register('password')}
-          />
-        </div>
-        <div className="w-full">
-          <Button disabled={loading} className="w-full">
-            {loading ? (
-              <>
-                <LoaderCircle className="mr-2 size-4 animate-spin" />
-                Creating account...
-              </>
-            ) : (
-              'Create account'
-            )}
-          </Button>
-        </div>
-      </form>
-    </AuthForm>
+    <>
+      <Helmet>
+        <title>Create Account — Bookmark Harbor</title>
+        <meta
+          name="description"
+          content="Create a free Bookmark Harbor account to start saving bookmarks."
+        />
+        <link rel="canonical" href="https://yourdomain.com/register" />
+      </Helmet>
+      <AuthForm>
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3">
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="name">Name</Label>
+            <Input
+              id="name"
+              type="text"
+              placeholder="John Doe"
+              autoComplete="name"
+              {...register('name')}
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="email">Email</Label>
+            <Input
+              id="email"
+              type="email"
+              placeholder="your@example.com"
+              autoComplete="email"
+              {...register('email')}
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="password">Password</Label>
+            <Input
+              id="password"
+              type="password"
+              placeholder="******"
+              autoComplete="new-password"
+              {...register('password')}
+            />
+          </div>
+          <div className="w-full">
+            <Button disabled={loading} className="w-full">
+              {loading ? (
+                <>
+                  <LoaderCircle className="mr-2 size-4 animate-spin" />
+                  Creating account...
+                </>
+              ) : (
+                'Create account'
+              )}
+            </Button>
+          </div>
+        </form>
+      </AuthForm>
+    </>
   );
 }
 
