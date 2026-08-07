@@ -43,13 +43,13 @@ function AccountButton() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="bg-background w-30 p-0">
-        <DropdownMenuItem asChild>
+        <DropdownMenuItem className="rounded-none p-0 cursor-pointer" asChild>
           <Link to={'/dashboard/account'} className="px-2 py-2">
             Account
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator className="m-0" />
-        <DropdownMenuItem className="p-0">
+        <DropdownMenuItem className="rounded-none p-0">
           <Button
             className="h-9 w-full justify-start px-3"
             variant={'ghost'}

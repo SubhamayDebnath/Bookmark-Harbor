@@ -31,7 +31,7 @@ function ForgotPassword() {
   };
   return (
     <section className="flex flex-1 justify-center py-5">
-      <div className="bg-background relative flex h-fit w-full max-w-sm flex-col gap-5 border p-5">
+      <div className="bg-background relative flex h-fit w-full max-w-sm flex-col gap-5 border rounded-lg p-5">
         <h1 className="text-primary text-base font-semibold tracking-tight">
           Forgot your password
         </h1>
@@ -47,7 +47,7 @@ function ForgotPassword() {
             />
           </div>
           <div className="mt-2">
-            <Button className="w-full" size="lg" disabled={loading}>
+            <Button className="w-full" disabled={loading}>
               {loading ? (
                 <>
                   <LoaderCircle className="mr-2 size-4 animate-spin" />

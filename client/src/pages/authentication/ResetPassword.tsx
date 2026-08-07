@@ -42,7 +42,7 @@ function ResetPassword() {
   };
   return (
     <section className="flex flex-1 justify-center py-5">
-      <div className="bg-background relative flex h-fit w-full max-w-sm flex-col gap-5 border p-5">
+      <div className="bg-background relative flex h-fit w-full max-w-sm flex-col gap-5 border rounded-lg p-5">
         <h1 className="text-primary text-base font-semibold tracking-tight">
           Reset your password
         </h1>
@@ -61,7 +61,6 @@ function ResetPassword() {
             <Button
               type="submit"
               className="w-full"
-              size="lg"
               disabled={loading}
             >
               {loading ? (

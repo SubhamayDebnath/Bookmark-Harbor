@@ -61,7 +61,7 @@ function LoginPage() {
           />
         </div>
         <div className="w-full">
-          <Button disabled={loading} className="w-full" size={'lg'}>
+          <Button disabled={loading} className="w-full">
             {loading ? (
               <>
                 <LoaderCircle className="mr-2 size-4 animate-spin" />
