@@ -11,6 +11,9 @@ import DashboardPage from '@/pages/dashboard/DashboardPage';
 import AccountPage from '@/pages/dashboard/AccountPage';
 import ForgotPassword from '@/pages/authentication/ForgotPassword';
 import ResetPassword from '@/pages/authentication/ResetPassword';
+import AdminRoute from '@/routes/AdminRoute';
+import AdminStatsPage from '@/pages/admin/AdminStatsPage';
+import AdminUsersPage from '@/pages/admin/AdminUsersPage';
 
 function AppRoutes() {
   return (
@@ -29,6 +32,10 @@ function AppRoutes() {
           <Route path="dashboard" element={<DashboardLayout />}>
             <Route index element={<DashboardPage />} />
             <Route path="account" element={<AccountPage />} />
+            <Route path="admin" element={<AdminRoute />}>
+              <Route index element={<AdminStatsPage />} />
+              <Route path="users" element={<AdminUsersPage />} />
+            </Route>
           </Route>
         </Route>
         <Route path="*" element={<NotFound />} />

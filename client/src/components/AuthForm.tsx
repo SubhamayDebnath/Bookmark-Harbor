@@ -6,7 +6,7 @@ export default function AuthForm({ children }: { children: ReactNode }) {
   const { pathname } = useLocation();
   return (
     <section className="flex flex-1 justify-center py-5">
-      <div className="bg-background relative flex h-fit w-full max-w-sm flex-col gap-5 border rounded-lg p-5">
+      <div className="bg-background relative flex h-fit w-full max-w-sm flex-col gap-5 rounded-lg border p-5">
         <div className="grid w-full grid-cols-2 gap-2">
           <Button
             variant={pathname === '/register' ? 'default' : 'outline'}

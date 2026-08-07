@@ -42,7 +42,7 @@ function ResetPassword() {
   };
   return (
     <section className="flex flex-1 justify-center py-5">
-      <div className="bg-background relative flex h-fit w-full max-w-sm flex-col gap-5 border rounded-lg p-5">
+      <div className="bg-background relative flex h-fit w-full max-w-sm flex-col gap-5 rounded-lg border p-5">
         <h1 className="text-primary text-base font-semibold tracking-tight">
           Reset your password
         </h1>
@@ -58,11 +58,7 @@ function ResetPassword() {
             />
           </div>
           <div className="mt-2">
-            <Button
-              type="submit"
-              className="w-full"
-              disabled={loading}
-            >
+            <Button type="submit" className="w-full" disabled={loading}>
               {loading ? (
                 <>
                   <LoaderCircle className="mr-2 size-4 animate-spin" />

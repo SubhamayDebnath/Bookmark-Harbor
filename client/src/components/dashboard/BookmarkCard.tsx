@@ -19,7 +19,7 @@ function BookmarkCard({ bookmark }: BookmarkCardProps) {
   })();
 
   return (
-    <div className="bg-card border rounded-lg p-3">
+    <div className="bg-card rounded-lg border p-3">
       <h2 className="text-primary font-medium">{bookmark.title}</h2>
       <span className="font-mono text-sm">{hostname}</span>
       <div className="mt-2 flex flex-wrap items-center gap-2">
