@@ -43,7 +43,7 @@ function AccountButton() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="bg-background w-30 p-0">
-        <DropdownMenuItem className="rounded-none p-0 cursor-pointer" asChild>
+        <DropdownMenuItem className="cursor-pointer rounded-none p-0" asChild>
           <Link to={'/dashboard/account'} className="px-2 py-2">
             Account
           </Link>

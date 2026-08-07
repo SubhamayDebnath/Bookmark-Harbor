@@ -73,7 +73,7 @@ function AccountPage() {
           <div className="mt-2 flex items-center gap-3">
             {user?.role === 'admin' && (
               <Button variant={'outline'} asChild>
-                <Link to={'/app/admin'}>Admin Dashboard</Link>
+                <Link to={'/dashboard/admin'}>Admin Dashboard</Link>
               </Button>
             )}
             <Button

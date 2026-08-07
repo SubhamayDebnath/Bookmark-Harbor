@@ -31,7 +31,7 @@ function ForgotPassword() {
   };
   return (
     <section className="flex flex-1 justify-center py-5">
-      <div className="bg-background relative flex h-fit w-full max-w-sm flex-col gap-5 border rounded-lg p-5">
+      <div className="bg-background relative flex h-fit w-full max-w-sm flex-col gap-5 rounded-lg border p-5">
         <h1 className="text-primary text-base font-semibold tracking-tight">
           Forgot your password
         </h1>
