@@ -5,7 +5,6 @@ export interface IUser {
   email: string;
   password: string;
   role: Role;
-  emailVerified: boolean;
   isActive: boolean;
   passwordResetToken?: string | null;
   passwordResetExpires?: Date | null;
