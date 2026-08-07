@@ -34,7 +34,7 @@ function DeleteBookmark({ bookmarkId, title }: DeleteBookmarkProps) {
       <DialogTrigger asChild>
         <Button
           variant="destructive"
-          size="icon-xs"
+          size="icon-sm"
           aria-label="Delete Bookmark"
         >
           <Trash />

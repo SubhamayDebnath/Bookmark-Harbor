@@ -61,7 +61,7 @@ function UpdateBookmark({ bookmark }: UpdateBookmarkProps) {
       <DialogTrigger asChild>
         <Button
           variant={'outline'}
-          size={'icon-xs'}
+          size={'icon-sm'}
           aria-label="Update Bookmark"
         >
           <Edit2Icon />

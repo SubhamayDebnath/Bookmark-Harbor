@@ -23,7 +23,7 @@ function BookmarkCard({ bookmark }: BookmarkCardProps) {
       <h2 className="text-primary font-medium">{bookmark.title}</h2>
       <span className="font-mono text-sm">{hostname}</span>
       <div className="mt-2 flex flex-wrap items-center gap-2">
-        <Button variant={'outline'} size={'icon-xs'} asChild>
+        <Button variant={'outline'} size={'icon-sm'} asChild>
           <Link to={bookmark.url} target="_blank" rel="noopener noreferrer">
             <Globe />
           </Link>
