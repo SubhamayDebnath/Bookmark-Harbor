@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router';
 import AppPagination from '@/components/common/AppPagination';
-import LoadingCard from '@/components/common/LoadingScreen';
+import LoadingScreen from '@/components/common/LoadingScreen';
 import BookmarkCard from '@/components/dashboard/BookmarkCard';
 import AddBookmark from '@/components/dashboard/AddBookmark';
 import { Input } from '@/components/ui/input';
@@ -18,7 +18,7 @@ import { useRefreshStore } from '@/store/refresh.store';
 import type { Bookmark, Pagination } from '@/types/bookmark.types';
 
 const LIMIT = 10;
-const SEARCH_DEBOUNCE_MS = 400;
+const SEARCH_DEBOUNCE_MS = 300;
 
 const sortItems = [
   { label: 'All', value: 'all' },
@@ -113,7 +113,7 @@ function DashboardPage() {
       </h1>
 
       {initialLoading ? (
-        <LoadingCard />
+        <LoadingScreen />
       ) : bookmarks.length === 0 ? (
         <div className="flex w-full flex-col items-center justify-center gap-3 px-5 py-20">
           <p className="text-center">Bookmark not found.</p>

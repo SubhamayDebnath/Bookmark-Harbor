@@ -1,7 +1,7 @@
 import { LoaderCircle } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
-import { useNavigate } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import AuthForm from '@/components/AuthForm';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -43,7 +43,15 @@ function LoginPage() {
           />
         </div>
         <div className="flex flex-col gap-2">
-          <Label htmlFor="password">Password</Label>
+          <div className="flex items-center justify-between">
+            <Label htmlFor="password">Password</Label>
+            <Link
+              to="/forget-password"
+              className="hover:text-primary text-sm font-medium"
+            >
+              Forget password?
+            </Link>
+          </div>
           <Input
             id="password"
             type="password"
