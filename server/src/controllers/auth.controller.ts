@@ -256,7 +256,7 @@ export const changePassword = async (c: Context) => {
       );
     }
     const { currentPassword, newPassword } = result.data;
-    const user = await User.findById(authUser.userId).select('+password');
+    const user = await User.findById(authUser._id).select('+password');
     if (!user) {
       return c.json({ success: false, message: 'User not found.' }, 404);
     }
