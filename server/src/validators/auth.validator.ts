@@ -31,3 +31,28 @@ export const loginSchema = z.object({
   email: emailSchema,
   password: z.string().trim().min(1, { error: 'Password is required.' }),
 });
+
+export const forgotPasswordSchema = z.object({
+  email: emailSchema,
+});
+
+export const resetPasswordSchema = z.object({
+  token: z.string().trim().min(1, { error: 'Reset token is required.' }),
+  password: passwordSchema,
+});
+
+export const changePasswordSchema = z
+  .object({
+    currentPassword: z
+      .string()
+      .trim()
+      .min(1, { error: 'Current password is required.' }),
+    newPassword: passwordSchema,
+  })
+  .refine(
+    ({ currentPassword, newPassword }) => currentPassword !== newPassword,
+    {
+      message: 'New password must be different from current password.',
+      path: ['newPassword'],
+    }
+  );
